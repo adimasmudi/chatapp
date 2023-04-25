@@ -20,6 +20,7 @@ func NewHandler(h *Hub) *Handler {
 
 type CreateReqRoom struct{
 	ID string `json:"id"`
+	Name string `json:"name"`
 }
 
 func (h *Handler) CreateRoom(c *fiber.Ctx) error {
@@ -33,6 +34,7 @@ func (h *Handler) CreateRoom(c *fiber.Ctx) error {
 
 	h.hub.Rooms[req.ID] = &Room{
 		ID : req.ID,
+		Name:    req.Name,
 		Clients : make(map[string]*Client),
 	}
 
@@ -78,6 +80,7 @@ func JoinRoom(hub *Hub) fiber.Handler{
 
 type RoomRes struct{
 	ID string `json:"id"`
+	Name string `json:"name"`
 }
 
 func (h *Handler) GetRooms(c *fiber.Ctx)error{
@@ -86,6 +89,7 @@ func (h *Handler) GetRooms(c *fiber.Ctx)error{
 	for _, r := range(h.hub.Rooms){
 		rooms = append(rooms, RoomRes{
 			ID : r.ID,
+			Name: r.Name,
 		})
 	}
 
