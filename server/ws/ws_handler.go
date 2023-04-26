@@ -47,22 +47,19 @@ func JoinRoom(hub *Hub) fiber.Handler{
 	return websocket.New(func(c *websocket.Conn){
 		
 		roomId := c.Params("roomId")
-		senderEmail := c.Query("senderEmail")
-		receiverEmail := c.Query("receiverEmail")
+		username := c.Query("username")
 
 		cl := &Client{
 			Conn : c,
 			Message : make(chan *Message, 10),
 			RoomID : roomId,
-			SenderEmail: senderEmail,
-			ReceriverEmail: receiverEmail,
+			Username : username,
 		}
 
 		m := &Message{
 			Content : "A new Request Chat",
 			RoomID: roomId,
-			SenderEmail: senderEmail,
-			ReceriverEmail: receiverEmail,
+			Username : username,
 		}
 
 		// register a new client through register channel
@@ -100,8 +97,7 @@ func (h *Handler) GetRooms(c *fiber.Ctx)error{
 
 type ClientRes struct{
 	ID string `json:"id" bson:"_id"`
-	SenderEmail string `json:"senderEmail"`
-	ReceiverEmail string `json:"receiverEmail"`
+	Username string `json:"username"`
 }
 
 func (h *Handler) GetClients(c *fiber.Ctx) error{
@@ -119,8 +115,7 @@ func (h *Handler) GetClients(c *fiber.Ctx) error{
 	for _, c := range(h.hub.Rooms[roomId].Clients){
 		clients = append(clients, ClientRes{
 			ID : c.ID,
-			SenderEmail : c.SenderEmail,
-			ReceiverEmail : c.ReceriverEmail,
+			Username : c.Username,
 		})
 	}
 

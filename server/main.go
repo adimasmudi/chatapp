@@ -2,12 +2,14 @@ package main
 
 import (
 	"chatapp/configs"
+	"chatapp/routes"
 	"chatapp/ws"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func main() {
@@ -23,6 +25,15 @@ func main() {
 	app.Use(recover.New())
 
 	configs.ConnectDB()
+
+	// collections
+	var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
+
+
+	api := app.Group("/api/v1")
+
+	// routes
+	routes.UserRoute(api, userCollection)
 
 	hub := ws.NewHub()
 	wsHandler := ws.NewHandler(hub)

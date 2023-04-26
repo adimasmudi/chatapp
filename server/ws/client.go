@@ -11,15 +11,13 @@ type Client struct {
 	Message        chan *Message
 	ID             string `json:"id" bson:"_id"`
 	RoomID         string             `json:"roomId"`
-	SenderEmail    string             `json:"senderEmail"`
-	ReceriverEmail string             `json:"receiverEmail"`
+	Username string `json:"username"`
 }
 
 type Message struct {
 	Content        string `json:"content"`
 	RoomID         string `json:"roomId"`
-	SenderEmail    string `json:"senderEmail"`
-	ReceriverEmail string `json:"receriverEmail"`
+	Username string `json:"username"`
 }
 
 func (c *Client) writeMessage(){
@@ -57,8 +55,7 @@ func (c *Client) readMessage(hub *Hub){
 		msg := &Message{
 			Content : string(m),
 			RoomID: c.RoomID,
-			SenderEmail: c.SenderEmail,
-			ReceriverEmail: c.ReceriverEmail,
+			Username : c.Username,
 		}
 
 		hub.Broadcast <- msg
