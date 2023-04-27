@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { AuthContext, UserInfo } from "../../modules/auth_provider";
 
 const index = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { authenticated } = useContext(AuthContext);
 
@@ -21,17 +21,17 @@ const index = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${API_URL}/login`, {
+      const res = await fetch(`${API_URL}/api/v1/auth/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
       if (res.ok) {
         const user: UserInfo = {
-          username: data.username,
-          id: data.id,
+          username: data.data.username,
+          id: data.data.id,
         };
 
         localStorage.setItem("user_info", JSON.stringify(user));
@@ -49,10 +49,10 @@ const index = () => {
           <span className="text-blue">welcome!</span>
         </div>
         <input
-          placeholder="email"
+          placeholder="username"
           className="p-3 mt-8 rounded-md border-2 border-grey focus:outline-none focus:border-blue"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"

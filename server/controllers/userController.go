@@ -65,7 +65,7 @@ func (h *userHandler) Login(c *fiber.Ctx) error {
 
 	//validate the request body
 	if err := c.BodyParser(&input); err != nil {
-		response := helper.APIResponse("Login Failed", http.StatusBadRequest, "error", &fiber.Map{"error" : err})
+		response := helper.APIResponse("Login Failed ini", http.StatusBadRequest, "error", &fiber.Map{"error" : err})
 		c.Status(http.StatusBadRequest).JSON(response)
 		return nil
 	}
@@ -73,7 +73,7 @@ func (h *userHandler) Login(c *fiber.Ctx) error {
 	logedinUser, token,  err := h.userService.Login(ctx,input)
 
 	if err != nil{
-		response := helper.APIResponse("Login Failed", http.StatusBadRequest, "error", &fiber.Map{"error" : err})
+		response := helper.APIResponse("Login Failed di", http.StatusBadRequest, "error", &fiber.Map{"error" : err})
 		c.Status(http.StatusBadRequest).JSON(response)
 		return nil
 	}
