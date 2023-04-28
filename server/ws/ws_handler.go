@@ -27,7 +27,7 @@ func (h *Handler) CreateRoom(c *fiber.Ctx) error {
 	var req CreateReqRoom
 
 	if err := c.BodyParser(&req);  err != nil{
-		response := helper.APIResponse("Failed to join room", http.StatusBadRequest, "error", &fiber.Map{"error" : err})
+		response := helper.APIResponse("Failed to create room", http.StatusBadRequest, "error", &fiber.Map{"error" : err})
 		c.Status(http.StatusBadRequest).JSON(response)
 		return nil
 	}
@@ -38,7 +38,7 @@ func (h *Handler) CreateRoom(c *fiber.Ctx) error {
 		Clients : make(map[string]*Client),
 	}
 
-	response := helper.APIResponse("success to join room", http.StatusOK, "success", req)
+	response := helper.APIResponse("success to create room", http.StatusOK, "success", req)
 	c.Status(http.StatusOK).JSON(response)
 	return nil
 }
